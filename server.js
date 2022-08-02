@@ -22,12 +22,14 @@ app.get('/', (req, res) => {
 
 app.get('/api/robots', (req, res) => {
     try {
-
-        rollbar.status("Bots are added using bots Array")
+        // rollbar.warning('Robots have been sent!')
+        rollbar.info("Bots are added using bots Array") 
 
         res.status(200).send(botsArr)
     } catch (error) {
         console.log('ERROR GETTING BOTS', error)
+
+        // rollbar.error(error)
         res.sendStatus(400)
     }
 })
@@ -68,12 +70,13 @@ app.post('/api/duel', (req, res) => {
         if (compHealthAfterAttack > playerHealthAfterAttack) {
             playerRecord.losses++
 
-           
+            rollbar.info(`Player has lost ${playerRecod.losses} times!`)
             res.status(200).send('You lost!')
         } else {
             playerRecord.losses++
 
-            rollbar.status("Status updates to 'won!' or 'lost!'")
+            rollbar.info(`Player has lost ${playerRecod.losses} times!`)
+            rollbar.critical("Status updates to 'won!' or 'lost!'")
 
             res.status(200).send('You won!')
         }
@@ -86,7 +89,7 @@ app.post('/api/duel', (req, res) => {
 app.get('/api/player', (req, res) => {
     try {
 
-        rollbar.status("Checking if bots final health status is updated")
+        rollbar.error("Checking if bots final health status is updated")
 
         res.status(200).send(playerRecord)
     } catch (error) {
